@@ -1,19 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Energy2D-JS Demo</title>
     <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
     <script src="lib/sprintf.js" type="text/javascript" ></script>
     <style type="text/css">
-    
+
     #canvasContainer {
       width:600px;
       height:600px;
       position:relative;
       margin-right: 20px;
     }
-    
+
     #canvasTemperatureLayer { 
       width:100%;
       height:100%;
@@ -23,7 +22,7 @@
       color:gray;
       border:1px; 
     }
-    
+
     #canvasPartsLayer { 
       width:100%;
       height:100%;
@@ -31,7 +30,7 @@
       padding:0px;
       border:1px; 
     }
-    
+
     #canvasVelocityLayer {
       width:100%;
       height:100%;
@@ -39,7 +38,7 @@
       padding:0px;
       border:1px; 
     }
-    
+
     #canvasVelocityLenDestination { 
       width:400px;
       height:400px;
@@ -48,7 +47,7 @@
       color:gray;
       border:1px; 
     }
-    
+
     #step-count {
       margin: 10px 0px 10px 20px; 
     }
@@ -214,7 +213,7 @@
           myRequire(libraries, callback)
         }
         else if (callback) {
-          callback();            
+          callback();        
         }
       }
     }
@@ -225,7 +224,7 @@
         myRequire(libraries, callback)
       }
       else if (callback) {
-        callback();            
+        callback();        
       }
     }
     script.src = libraries[0];
@@ -238,7 +237,7 @@
     webGLEnabled = true;
     if (webGLEnabled) {
       myRequire([ "conversions/models_index.js", "src/model2d.js" ],
-      function() {          
+      function() {      
         var webgl = !!window.WebGLRenderingContext;
         // get DOM elements
         var canvas_temperature = document.getElementById("canvasTemperatureLayer");
@@ -246,30 +245,30 @@
         var canvas_velocity = document.getElementById("canvasVelocityLayer");
         var canvas_debug = document.getElementById("canvasVelocityLenDestination");
         var tdata = document.getElementById("tdata");
-        
+    
         var choose_array_type = document.getElementById("choose-array-type");
         var choose_active_solvers = document.getElementById("active-solvers");
-        
+    
         var sim_stop = document.getElementById("sim-stop");
         var sim_reset = document.getElementById("sim-reset");
         var sim_step = document.getElementById("sim-step");
         var sim_go = document.getElementById("sim-go");
         var steps_per_frame_element = document.getElementById("steps-per-frame");
         var step_count = document.getElementById("step-count");
-        
+    
         var show_visualization = document.getElementById("show-visualization");
         var show_velocity_arrows = document.getElementById("show-velocity-arrows");
         var show_velocity_len = document.getElementById("show-velocity-length");
         var show_data_table = document.getElementById("show-temp-data-table");
         var use_hq_smoothing = document.getElementById("hq-smoothing");
         var hq_smoothing_grid = document.getElementById("hq-smoothing-grid");
-        
+    
         var models_select = document.getElementById("models-select");
-         
+     
         if (webgl) {
             choose_array_type.elements[1].disabled = false;
         }
-        
+    
         // fill initial states menu (and sort)
         names_array = [];
         for (var name in models_index) 
@@ -285,26 +284,26 @@
             size++;
         }
         models_select.size = size <= 30 ? size : 30;
-        
+    
         // setup simulation
         var model;
         var model_name = undefined;
         loadModelState(model_name);
         var steps_per_frame = getStepsPerFrame(); 
-        
+    
         // setup rendering
         model2d.setupRGBAColorTables(); 
         setupRendering();
-              
+          
         // display initial state
         step_count.innerHTML = 'frame: ' + model.indexOfStep;
-        
+    
         // timing variables
         var one_before_that_sample_time = new Date();
         var last_sample_time = new Date();
         var sample_time = new Date();
         var average_sample_time_ms = sample_time - last_sample_time;
-        
+    
         // setup callbacks
         // model
         models_select.onchange = function() {
@@ -315,15 +314,15 @@
         choose_array_type.onchange = function() {
             loadModelState(model_name);
         };
-        
+    
         steps_per_frame_element.onchange = function() {
             steps_per_frame = getStepsPerFrame();
         }
-        
+    
         choose_active_solvers.onchange = function() {
             setupActiveSolvers(model);
         };
-        
+    
         sim_go.onchange = function() {
             if (this.checked) {
                 paintInterval = setInterval("renderModelStep()", 0);
@@ -348,18 +347,18 @@
                 window.clearInterval(paintInterval);
             }
         }
-        
+    
         // rendering
         show_velocity_arrows.onchange = function() {
             if (!this.checked)
                 // clear arrows when velocity rendering is disabled
                 model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
         };
-        
+    
         use_hq_smoothing.onchange = function() {
             setupRendering();
         };
-        
+    
         hq_smoothing_grid.onchange = function() {
             if (use_hq_smoothing.checked) {
                 var grid_dim = getSmoothingGridDim();
@@ -367,7 +366,7 @@
                 displayTemperatureFunc(canvas_temperature, model);
             }
         };
-                
+            
         // simulation
         window.renderModelStep = function() {
             sample_time = new Date();
@@ -386,7 +385,7 @@
             if (show_data_table.checked) 
                 model2d.displayTemperatureTable(tdata, model);
         }
-        
+    
         // utils
         function setupModel(options) {
             if (choose_array_type.elements[0].checked) {
@@ -398,7 +397,7 @@
             setupActiveSolvers(model);
             return model;
         }
-        
+    
         function setupActiveSolvers(model) {
             if (choose_active_solvers.elements[1].checked) {
                 model.convective = true;
@@ -406,11 +405,11 @@
                 model.convective = false;
             }
         }
-        
+    
         function getStepsPerFrame() {
             return steps_per_frame_element.selectedIndex + 1;
         }
-        
+    
         function setupRendering() {
             if (use_hq_smoothing.checked){
                 displayTemperatureFunc = model2d.displayTemperatureCanvasWithSmoothing;
@@ -422,23 +421,23 @@
                 model2d.initCanvas(canvas_temperature, model.nx, model.ny);
             }
             displayTemperatureFunc(canvas_temperature, model);
-            
+        
             model2d.initCanvas(canvas_parts, canvas_parts.clientWidth, canvas_parts.clientHeight);
             model2d.displayParts(canvas_parts, model.parts, model.lx, model.ly);
-            
+        
             model2d.initCanvas(canvas_velocity, canvas_velocity.clientWidth, canvas_velocity.clientHeight);
             if (show_velocity_arrows.checked)
                 model2d.displayVectorField(canvas_velocity, model.u, model.v, model.nx, model.ny, 4);
-            
+        
             model2d.initCanvas(canvas_debug, model.nx, model.ny);
             if (show_velocity_len.checked)
                 model2d.displayVelocityLengthCanvas(canvas_debug, model);
         }
-        
+    
         function getSmoothingGridDim() {
             return (hq_smoothing_grid.selectedIndex + 1) * 100; // so, first option is 100, next 200, etc.
         }
-        
+    
         function loadModelState(state_name) {
             if (!state_name || state_name == "default") {
                 model = setupModel();
@@ -452,11 +451,11 @@
             else {
               // require and try to load again 
               myRequire("conversions/" + models_index[state_name], function() {
-                  loadModelState(state_name);    
+                  loadModelState(state_name);
               });
             }
         }
-        
+    
       });
     } else {
         var content = document.getElementById('content');
