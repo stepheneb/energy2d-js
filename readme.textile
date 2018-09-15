@@ -4,7 +4,7 @@ Energy2D-JS is a JavaScript port of the Java application: "Energy2D":http://ener
 
 This JavaScript port supports simulation of thermal conductivity and convection in a 100x100 cell simulation space. 
 
-A "demo":http://concord-consortium.github.com/energy2d-js/model2d-demo.html (currently the convective solver is not working).
+A "demo":https://github.com/stepheneb/energy2d-js (currently the convective solver is not working).
 
 If the browser supports "JavaScript Typed Arrays":https://developer.mozilla.org/en/JavaScript_typed_arrays Energy2D-JS will use use them for increased computational performance.
 
